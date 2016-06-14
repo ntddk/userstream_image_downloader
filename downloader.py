@@ -3,10 +3,7 @@
 
 from tweepy import *
 import urllib
-import sys
 import datetime
-import re
-from PIL import Image
 import argparse
 
 parser = argparse.ArgumentParser(description='Twitter Userstream Image Downloader')
