@@ -34,7 +34,7 @@ def get_userlist():
 
 class StreamListener(StreamListener):
     def on_status(self, status):
-        if status.entities.has_key('media') :
+        if status.entities.has_key('media') and not status.entities.has_key('retweeted_status'):
             for line in lines:
                  if line.find(status.author.screen_name) >= 0:
                     medias = status.entities['media']
