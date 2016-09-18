@@ -3,7 +3,11 @@
 
 from tweepy import *
 import urllib
+import sys
+import os
 import datetime
+import re
+from PIL import Image
 import argparse
 
 parser = argparse.ArgumentParser(description='Twitter Userstream Image Downloader')
@@ -43,7 +47,12 @@ class StreamListener(StreamListener):
                     print media_url
                     now = datetime.datetime.now()
                     time = now.strftime("%H%M%S")
-                    filename = '{}_{}.jpg'.format(status.author.screen_name, status.id)
+                    filedir = './download/{}'.format(status.author.screen_name)
+                    try:
+                        os.makedirs(filedir)
+                    except OSError:
+                        pass
+                    filename = os.path.join(filedir, '{}.jpg'.format(status.id))
                     print filename
                     try:
                         urllib.urlretrieve(media_url, filename)
@@ -52,6 +61,10 @@ class StreamListener(StreamListener):
 
 auth = get_oauth()
 lines = get_userlist()
-stream = Stream(auth, StreamListener(), secure=True)
+stream = Stream(auth, StreamListener(), secure = True)
 print "Start Streaming!"
+try:
+    os.makedirs('./download')
+except OSError:
+    pass
 stream.userstream()
